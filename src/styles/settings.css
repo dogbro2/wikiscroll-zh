@@ -1,0 +1,66 @@
+/* Maintenance filters are one inline group, shared by both settings panels. */
+.help-type-options { margin:14px 0 20px; padding:16px; border:1px solid var(--border); border-radius:14px; background:var(--surface); animation:help-options-in 220ms ease-out both; }
+.help-type-options[hidden],.help-type-grid button[hidden],.help-type-note[hidden] { display:none; }
+.help-type-heading { display:flex; align-items:center; justify-content:space-between; gap:12px; font-size:14px; font-weight:650; }
+.help-types-all { font:inherit; font-size:12px; font-weight:500; border:0; background:none; color:var(--accent); padding:6px 0; cursor:pointer; }
+.help-types-all:disabled { opacity:.5; cursor:default; }
+.help-type-description,.help-type-note { color:var(--muted); font-size:12px; line-height:1.5; margin:6px 0 14px; }
+.help-type-note { margin:12px 0 0; }
+.help-type-grid { display:grid; grid-template-columns:repeat(2,minmax(0,1fr)); grid-auto-rows:1fr; gap:8px; }
+.help-type-grid button { display:flex; align-items:center; gap:8px; height:48px; min-width:0; padding:10px 9px; border:1px solid var(--border); border-radius:9px; background:transparent; color:var(--muted); font:inherit; font-size:13px; text-align:start; cursor:pointer; }
+.help-type-options[data-help-count="1"] .help-type-grid { grid-template-columns:1fr; }
+.help-type-grid button > span { white-space:nowrap; }
+.help-type-grid button[aria-pressed="true"] { border-color:var(--accent); background:color-mix(in srgb,var(--accent) 12%,transparent); color:var(--ink); }
+.help-type-grid button[aria-pressed="false"] .ws-icon { opacity:.5; }
+.help-type-grid button:focus-visible { outline:2px solid var(--accent); outline-offset:2px; }
+.help-type-grid .ws-icon { width:18px; height:18px; }
+body[data-help-mode="only"] .burger-row.help-row { border-bottom:0; padding-bottom:0; }
+@media(max-width:359px) { .help-type-grid { grid-template-columns:1fr; } }
+@keyframes help-options-in { from { opacity:0; transform:translateY(-5px); } to { opacity:1; transform:none; } }
+@media(prefers-reduced-motion:reduce) { .help-type-options { animation:none; } }
+
+/* Reading switches: centered icons in a common column; toggles align with titles. */
+.ws-icon[data-ui-icon="dim-images"] { --ui-icon-color:#86b8cf; }
+body.light .ws-icon[data-ui-icon="dim-images"] { --ui-icon-color:#396f8a; }
+.burger-row.reading-option-row, #settingsPanel .sp-row.reading-option-row { align-items:flex-start; gap:16px; }
+.reading-option-row .burger-row-label,.reading-option-row .sp-row-label { display:grid; grid-template-columns:24px minmax(0,1fr); gap:10px; align-items:start; flex:1; }
+.reading-option-row .ico { width:24px; height:24px; align-self:center; }
+.reading-option-row .burger-row-label > div > div:first-child,.reading-option-row .sp-row-label > div > div:first-child { line-height:24px; }
+.reading-option-row > .toggle-sw { margin-top:0; }
+@media(min-width:768px) { #settingsPanel .sp-row.reading-option-row > .toggle-sw { margin-top:-1px; } }
+
+/* Hover: every clickable choice in Settings brightens its words to the ink
+   colour, matching the Help Wikipedia choices. Touch screens skip it so a tap
+   never leaves a lit label behind. */
+.reading-size-choices button { cursor: pointer; transition: color .2s, background-color .2s; }
+@media (hover: hover) {
+  .reading-size-choices button:not(.on):hover,
+  .help-type-grid button:hover,
+  .depth-step:not(.active):hover,
+  body.light .depth-step:not(.active):hover { color: var(--ink); }
+  .sp-about-links .about-link:hover,
+  .sp-about-links .privacy-link-btn:hover,
+  body.light .sp-about-links .privacy-link-btn:hover { color: var(--ink) !important; }
+}
+
+/* About card gesture guide: three equal, centred columns under a thin rule.
+   Each icon moves in its own direction while Settings is open. */
+.about-gestures { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 8px; margin: 18px 0 16px; padding-top: 16px; border-top: 1px solid var(--rule); }
+/* Columns keep their physical order in right-to-left languages so the left swipe stays on the left. */
+.about-gestures { direction: ltr; }
+.rtl-ui .about-gesture p { direction: rtl; }
+.about-gesture { display: flex; flex-direction: column; align-items: center; gap: 10px; min-width: 0; text-align: center; }
+.about-gesture p { margin: 0; font: 400 12px/1.35 var(--sans); color: var(--muted); overflow-wrap: anywhere; }
+.about-gesture strong { display: block; font-size: 13px; font-weight: 600; color: var(--ink); }
+.ag-ico { width: 34px; height: 34px; overflow: visible; fill: none; stroke: var(--ink); stroke-width: 1.5; stroke-linecap: round; stroke-linejoin: round; }
+.ag-flip { transform: scaleX(-1); }
+.ag-track { stroke: var(--accent); stroke-width: 1.7; }
+:is(#settingsPanel.open, #burgerMenu.open) .about-gesture:is([data-gesture="left"], [data-gesture="right"]) .ag-move { animation: ag-swipe 2.6s .3s infinite cubic-bezier(.45, 0, .25, 1); }
+:is(#settingsPanel.open, #burgerMenu.open) .about-gesture:is([data-gesture="left"], [data-gesture="right"]) .ag-track { animation: ag-track 2.6s .3s infinite cubic-bezier(.45, 0, .25, 1); transform-origin: 12px -.8px; }
+:is(#settingsPanel.open, #burgerMenu.open) [data-gesture="space"] .ag-move { animation: ag-key 2.6s .3s infinite ease-in-out; transform-origin: 12px 12px; }
+:is(#settingsPanel.open, #burgerMenu.open) [data-gesture="press"] .ag-track { animation: ag-press 2.6s .3s infinite ease-out; transform-origin: 9.6px 4.6px; }
+@keyframes ag-swipe { 0%, 100% { transform: none; } 30%, 45% { transform: translateX(3.2px) rotate(6deg); } }
+@keyframes ag-track { 0%, 100% { transform: scaleX(.86); opacity: .55; } 30%, 45% { transform: scaleX(1.06); opacity: 1; } }
+@keyframes ag-key { 0%, 100% { transform: none; } 18%, 34% { transform: translateY(1.2px) scale(.97); } }
+@keyframes ag-press { 0% { transform: scale(.6); opacity: 0; } 25% { opacity: 1; } 60%, 100% { transform: scale(1.15); opacity: 0; } }
+@media (prefers-reduced-motion: reduce) { .about-gesture .ag-move, .about-gesture .ag-track { animation: none !important; } }

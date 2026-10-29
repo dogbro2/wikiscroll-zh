@@ -1,0 +1,36 @@
+---
+import PageLayout from "../../layouts/PageLayout.astro";
+import AboutContent from "../../components/about/AboutContent.astro";
+
+// Deployment origin; see ReaderHead.astro. Unset means the page omits
+// absolute URLs instead of pointing at another site.
+const SITE = (import.meta.env.PUBLIC_SITE_ORIGIN || Astro.site?.origin || '').replace(/\/+$/, '');
+const img = (SITE || '') + '/images/og-discovery-v12.png';
+const aboutLd = {
+  "@context": "https://schema.org",
+  "@type": "AboutPage",
+  ...(SITE ? {"url": SITE + "/about/"} : {}),
+  "name": "About WikiScroll",
+  "description": "Turn doomscrolling into discovery. Explore WikiScroll’s Wikipedia reader, travel guides, topic filters, shared collections, languages, and mindful reading tools.",
+  "video": {
+    "@type": "VideoObject",
+    "name": "WikiScroll: Replace doomscrolling with discovery",
+    "description": "A 20-second film: art, maps, nature and space images from Wikimedia Commons, then the WikiScroll reader.",
+    "thumbnailUrl": SITE + "/media/wikiscroll-film-poster-v5.jpg",
+    "contentUrl": SITE + "/media/wikiscroll-film-v5.mp4",
+    "uploadDate": "2026-10-28",
+    "duration": "PT20S"
+  },
+  "about": {
+    "@type": "WebApplication",
+    "name": "WikiScroll",
+    ...(SITE ? {"url": SITE + "/"} : {}),
+    "applicationCategory": "EducationalApplication",
+    "operatingSystem": "Web"
+  }
+};
+---
+<PageLayout bodyClass="about-page">
+<Fragment slot="head"><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>About WikiScroll</title><meta name="description" content="Turn doomscrolling into discovery. Explore WikiScroll’s Wikipedia reader, travel guides, topic filters, shared collections, languages, and mindful reading tools.">{SITE && <link rel="canonical" href={`${SITE}/about/`} />}<meta property="og:type" content="website"><meta property="og:title" content="About WikiScroll: Replace doomscrolling with discovery"><meta property="og:description" content="Turn doomscrolling into discovery. Explore WikiScroll’s Wikipedia reader, travel guides, topic filters, shared collections, languages, and mindful reading tools.">{SITE && <meta property="og:url" content={`${SITE}/about/`} />}<meta property="og:image" content={img}><meta name="twitter:card" content="summary_large_image"><meta name="twitter:title" content="About WikiScroll"><meta name="twitter:description" content="Turn doomscrolling into discovery. Explore WikiScroll’s Wikipedia reader, travel guides, topic filters, shared collections, languages, and mindful reading tools."><meta name="twitter:image" content={img}><link rel="icon" href="/images/favicon.ico?v=42"><link rel="stylesheet" href="/about.css?v=51"><script type="application/ld+json" set:html={JSON.stringify(aboutLd)} /></Fragment>
+<header><a href="/"><img src="/images/wordmark-dark.svg" alt="WikiScroll" width="220" height="56"></a><a href="/">Open the reader →</a></header><main class="about-copy"><AboutContent /></main>
+</PageLayout>

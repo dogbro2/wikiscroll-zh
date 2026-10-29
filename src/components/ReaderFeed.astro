@@ -1,0 +1,60 @@
+---
+import Icon from "./Icon.astro";
+---
+<!-- OFFLINE BANNER -->
+<div class="offline-banner" id="offlineBanner"><Icon name="offline" /><span>You're offline. Cached articles still work</span></div>
+
+<!-- SEO FALLBACK -->
+<noscript>
+<div style="max-width:700px;margin:60px auto;padding:20px;font-family:sans-serif;color:#333;line-height:1.8;">
+  <h1>WikiScroll: Turn doomscrolling into discovery</h1>
+  <p>Turn doomscrolling into mindful discovery. Explore surprising Wikipedia knowledge and Wikivoyage destinations, save what matters, and learn at your own pace.</p>
+  <p>WikiScroll is a free reader that shows random Wikipedia and Wikivoyage articles as calm, swipeable cards. Each card introduces an article about science, history, geography, food, arts, technology, sports, or fascinating people from around the world.</p>
+  <h2>Features</h2>
+  <p>Discover Wikipedia articles in a calm, thoughtfully designed reader. Full Wikivoyage travel guide integration with interactive map explorer. Support for 15 languages including English, Spanish, French, German, Italian, Portuguese, Russian, Japanese, Chinese, Arabic, Hindi, Korean, Dutch, Polish, and Hebrew. Topic filtering across 12 categories. Swipe right to save articles, left to skip. Ambient reading mode for distraction-free learning. Reading history to find articles you've seen before. Offline support lets you read cached articles without internet. Dark and light themes. Article depth slider to control how obscure your feed gets. Collections to organize saved articles. Share articles with rich link previews. Keyboard shortcuts for desktop power users. Install as a Progressive Web App on any device.</p>
+  <h2>How WikiScroll Works</h2>
+  <p>WikiScroll fetches random articles from the Wikipedia and Wikivoyage APIs, keeps those with a readable introduction, and presents them as full-screen cards. Each card shows the article title, an excerpt, a thumbnail image, and auto-detected category tags. Swipe right or press Save to keep articles for later. Tap "Read full article" to visit the original Wikipedia or Wikivoyage page. For Wikivoyage travel guides, an interactive map shows the location, built with Leaflet, OpenStreetMap data and CARTO map tiles.</p>
+  <h2>Privacy First</h2>
+  <p>WikiScroll requires no account and sets no tracking cookies. When enabled, Cloudflare Web Analytics measures aggregate visits and performance without identifying individual visitors. Your preferences, saved articles, and reading history stay on your device unless you explicitly share a collection. WikiScroll's source code is public, so anyone can see how it works.</p>
+  <h2>Install WikiScroll</h2>
+  <p>WikiScroll is a Progressive Web App (PWA) that works in any modern browser. Install it on your home screen for a native app-like experience. On iPhone, tap the Share button in Safari and select "Add to Home Screen." On Android, tap the menu in Chrome and select "Install app."</p>
+  <p><a href="/">Launch WikiScroll</a>. Please enable JavaScript to use WikiScroll.</p>
+  <h2>Frequently Asked Questions</h2>
+  <p><strong>What is WikiScroll?</strong> WikiScroll is a free web app that presents random Wikipedia and Wikivoyage articles in a swipeable discovery reader. Follow your curiosity at your own pace.</p>
+  <p><strong>Is WikiScroll free to use?</strong> Yes, completely free with no ads, no tracking cookies, and no account required. Your saved articles and history stay on your device.</p>
+  <p><strong>Does WikiScroll work offline?</strong> Yes, WikiScroll is a Progressive Web App with offline support. Saved articles and recently loaded cards and images stay available without an internet connection. New articles need a connection.</p>
+  <p><strong>What languages does WikiScroll support?</strong> 15 languages: English, Spanish, French, German, Italian, Portuguese, Russian, Japanese, Chinese, Arabic, Hindi, Korean, Hebrew, Dutch, and Polish.</p>
+</div>
+</noscript>
+
+<!-- FEED -->
+<div class="feed" id="feed" role="main" tabindex="0" aria-label="Article discovery feed">
+  <div class="spin-wrap" id="spinner">
+    <div class="spin"></div>
+    <div class="spin-lbl">Loading articles…</div>
+  </div>
+</div>
+
+<!-- GESTURE COACH: shown on launch until the reader has scrolled and swiped once -->
+<div class="coach" id="coach" role="note" aria-hidden="true">
+  <div class="coach-row" data-gesture="scroll">
+    <svg class="coach-ico" viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+      <g class="coach-track"><path d="M1.4 3.6 3.2 1.6 5 3.6M1.4 9.4l1.8 2 1.8-2M3.2 2.4v8.8"/></g>
+      <g class="coach-move"><path class="coach-hand" d="M8 13.4V4.6a1.6 1.6 0 0 1 3.2 0v6.2m0-.6a1.6 1.6 0 0 1 3.2 0v1.2m0-.4a1.6 1.6 0 0 1 3.2 0v.8m0 0a1.6 1.6 0 0 1 3.2 0v3.3a6.8 6.8 0 0 1-6.8 6.8h-1.4a5.6 5.6 0 0 1-4.3-2l-3-3.6a1.5 1.5 0 0 1 2.3-1.9L8 15"/></g>
+    </svg>
+    <p><strong>Scroll.</strong> <span class="coach-touch">Swipe up for the next discovery.</span><span class="coach-desk">Scroll or press the down arrow for the next discovery.</span></p>
+  </div>
+  <div class="coach-row" data-gesture="swipe">
+    <svg class="coach-ico" viewBox="0 -2 24 26" aria-hidden="true" focusable="false">
+      <g class="coach-track"><path d="M7.6-2.4 5.8-.8l1.8 1.6m8.8-3.2 1.8 1.6-1.8 1.6M6.4-.8h11.2"/></g>
+      <g class="coach-move"><path class="coach-hand" d="M8 13.4V4.6a1.6 1.6 0 0 1 3.2 0v6.2m0-.6a1.6 1.6 0 0 1 3.2 0v1.2m0-.4a1.6 1.6 0 0 1 3.2 0v.8m0 0a1.6 1.6 0 0 1 3.2 0v3.3a6.8 6.8 0 0 1-6.8 6.8h-1.4a5.6 5.6 0 0 1-4.3-2l-3-3.6a1.5 1.5 0 0 1 2.3-1.9L8 15"/></g>
+    </svg>
+    <p><span class="coach-touch"><strong>Swipe.</strong> Right to save, left to skip.</span><span class="coach-desk"><strong>Save or skip.</strong> Right arrow to save, left arrow to skip.</span></p>
+  </div>
+</div>
+
+<!-- PULL TO REFRESH -->
+<div class="ptr-indicator" id="ptrIndicator" aria-hidden="true">
+  <svg viewBox="0 0 24 24"><polyline points="6 9 12 15 18 9"/></svg>
+</div>
+

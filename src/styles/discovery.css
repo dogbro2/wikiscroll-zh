@@ -1,0 +1,149 @@
+/* ── On this day (release 69) ────────────────────────────────────────────
+   Badge on cards whose subject's anniversary is today (worker/today.js).
+   It flips in once, with one light sweep across the photo, when the card is
+   reached. Styled like the map button so it belongs to the card. */
+.today-badge {
+  display: inline-flex; align-items: center; gap: 6px;
+  padding: 7px 12px 7px 10px; border-radius: 12px;
+  font: 600 12px/1.2 var(--sans); color: var(--ink);
+  background: var(--surface); border: 1px solid var(--rule);
+  box-shadow: 0 3px 12px #0003; white-space: nowrap;
+}
+.today-year { color: var(--accent); font-variant-numeric: tabular-nums; }
+.today-year::before { content: "·"; color: var(--muted); margin-inline-end: 6px; }
+.art-media > .today-badge {
+  position: absolute; z-index: 3; top: 12px; inset-inline-start: 12px;
+  max-width: calc(100% - 24px); overflow: hidden; text-overflow: ellipsis;
+  opacity: 0; transform: perspective(500px) rotateX(-75deg) translateY(-6px); transform-origin: 50% 0;
+}
+.meta-row > .today-badge { margin-inline-end: 8px; opacity: 0; transform: translateY(4px) scale(.96); }
+.art-media > .today-sheen {
+  position: absolute; inset: 0; z-index: 2; pointer-events: none;
+  background: linear-gradient(105deg, transparent 30%, rgba(255,255,255,.26) 48%, rgba(255,255,255,.08) 56%, transparent 70%);
+  transform: translateX(-130%); opacity: 0;
+}
+.card.today-revealed .today-badge { animation: today-badge-in var(--motion-open) var(--ease-spring) 240ms both; }
+.card.today-revealed .today-sheen { animation: today-sheen 1100ms cubic-bezier(.45, 0, .2, 1) 420ms both; }
+.card.today-revealed .today-ico { display: inline-block; animation: today-ico 520ms var(--ease-spring) 560ms both; }
+@keyframes today-badge-in { to { opacity: 1; transform: none; } }
+@keyframes today-sheen { 0% { opacity: 1; transform: translateX(-130%); } 100% { opacity: 1; transform: translateX(130%); } }
+@keyframes today-ico { 0% { transform: scale(1); } 45% { transform: scale(1.28) rotate(-8deg); } 100% { transform: none; } }
+@media (prefers-reduced-motion: reduce) {
+  .card.is-today .today-badge { opacity: 1; transform: none; animation: none !important; }
+  .card.is-today .today-sheen { display: none; }
+  .card.is-today .today-ico { animation: none !important; }
+}
+
+/* Language lists: languages without a Wikivoyage edition are hidden in
+   Wikivoyage mode (syncLangOptions); the option styles set display, which
+   overrode [hidden]. The phone list opens tall enough for every language. */
+.blopt[hidden], .lopt[hidden] { display: none !important; }
+.burger-lang-grid.burger-lang-grid.open { max-height: 640px; }
+
+/* ── Typography (release 71) ─────────────────────────────────────────────
+   Two families only: var(--serif) for titles, var(--sans) for everything
+   else. Panel titles share one size and weight; no UI text below 11px. */
+@media (min-width: 768px) {
+  #settingsPanel .sp-hdr > span, #lp .lp-hdr > span, #hp .hp-hdr > span, #topicSheet #topicSheet .sheet-title, #topicSheet .sheet-title {
+    font: 600 24px/1.25 var(--sans); letter-spacing: -.025em;
+  }
+}
+body .mobile-settings-heading h2 { font: 600 24px/1.25 var(--sans); letter-spacing: -.025em; }
+#sourceDialog #sourceTitle { font: 600 24px/1.25 var(--sans); letter-spacing: -.025em; padding-right: 48px; }
+#sourceDialog .source-eyebrow { font-size: 11px; }
+#sourceDialog h3 span { font-size: 11px; }
+#settingsPanel .sp-section-title, .sp-section-title { font: 600 12px/1.4 var(--sans); letter-spacing: .025em; text-transform: none; }
+.depth-steps .depth-step span { font-size: 11px; }
+.week-heatmap .week-day-lbl, .week-heatmap .week-day-cnt, .week-heatmap .week-day-today { font-size: 11px; }
+#likedList .li-src, .card .panel .chip { font-size: 11px; }
+/* Row actions on the phone settings sheet: one style, one line. */
+.burger-row .history-action { white-space: nowrap; min-height: 40px; font: 600 12px/1 var(--sans); }
+.pill.has-topics { background: color-mix(in srgb, var(--accent), transparent 88%); }
+
+/* Restoring a deleted collection (Saved Articles). */
+.coll-undo { display: flex; align-items: center; justify-content: space-between; gap: 12px; margin-bottom: 12px; padding: 8px 8px 8px 14px; border: 1px solid var(--rule); border-radius: 10px; font-size: 13px; color: var(--muted); }
+
+/* Hidden for a moment while a non-English reader's interface language loads (lang.js). */
+html.i18n-pending body { visibility: hidden; }
+
+/* Place field in the travel filters, with an ⓘ button that explains the search. */
+.travel-place { margin: 15px 0; font-size: 12px; line-height: 1.5; }
+.travel-place-head { display: flex; align-items: center; gap: 8px; }
+.travel-info { position: relative; display: inline-grid; place-items: center; width: 18px; height: 18px; padding: 0; border: 1px solid currentColor; border-radius: 50%; background: none; color: var(--muted); font: italic 600 11px/1 var(--serif); cursor: pointer; }
+.travel-info::after { content: ''; position: absolute; inset: -13px; }
+.travel-info[aria-expanded="true"] { background: var(--accent-solid); border-color: var(--accent-solid); color: #fff; }
+.travel-help { margin: 6px 0 8px; padding: 10px 12px; border: 1px solid var(--rule); border-radius: 12px; background: var(--surface); }
+.travel-filters .travel-help p { margin: 0 0 6px; }
+.travel-filters .travel-help p:last-child { margin-bottom: 0; }
+/* End of a travel filter's results: one action per line. */
+.travel-end-filter { color: var(--ink); font-weight: 600; margin: -8px 0 18px; }
+.travel-end-actions { display: flex; flex-direction: column; gap: 10px; }
+.travel-end-actions .err-btn + .err-btn { background: none; color: var(--ink); border: 1px solid var(--rule); }
+.travel-end h2.err-ttl, .library-end h2.err-ttl { margin-top: 0; font-size: clamp(23px, 5.5vw, 30px); line-height: 1.2; letter-spacing: -.025em; text-wrap: balance; overflow-wrap: break-word; }
+.travel-end .err-msg, .library-end .err-msg { text-wrap: pretty; }
+
+/* Settings About card footer: About, Privacy Policy and the GitHub icon as one
+   evenly spaced, centred row that wraps cleanly on narrow phones. */
+.sp-about-links { display: flex; flex-wrap: wrap; justify-content: center; gap: 0 20px; margin-top: 12px; }
+.sp-about-links .about-link, .sp-about-links .privacy-link-btn, body.light .sp-about-links .privacy-link-btn {
+  display: inline-flex; align-items: center; min-height: 36px; padding: 0; margin: 0;
+  font: 400 12px/1.2 var(--sans); color: var(--accent) !important;
+  text-decoration: underline; text-underline-offset: 3px; background: none; border: 0; cursor: pointer;
+}
+.sp-about-links .about-link-icon { text-decoration: none; justify-content: center; min-width: 36px; }
+.sp-about-links .about-link-icon svg { display: block; }
+
+/* A failed feed request should explain the wait without covering the reader. */
+.feed-waiting .err { background: none; border-color: transparent; }
+.feed-waiting .err-ttl, body.light .feed-waiting .err-ttl { text-wrap: balance; font-size: clamp(24px, 5.8vw, 30px); line-height: 1.2; }
+.feed-waiting-saved { margin: 20px 0 0; color: var(--muted); font-size: 12px; line-height: 1.6; }
+.feed-service-status { position: fixed; z-index: 6; left: 50%; top: 128px; transform: translate(-50%, -6px); width: max-content; max-width: min(420px, calc(100% - 32px)); display: flex; flex-wrap: wrap; justify-content: center; gap: 2px 10px; padding: 8px 14px; border: 1px solid var(--rule); border-radius: 12px; background: color-mix(in srgb, var(--surface) 92%, transparent); -webkit-backdrop-filter: blur(12px); backdrop-filter: blur(12px); box-shadow: 0 6px 20px #0004; color: var(--muted); text-align: center; font: 400 12px/1.5 var(--sans); opacity: 0; visibility: hidden; pointer-events: none; transition: opacity .22s ease, transform .22s ease, visibility .22s ease; }
+.feed-service-status.visible { transform: translate(-50%, 0); opacity: 1; visibility: visible; }
+.feed-service-label { color: var(--ink); }
+.feed-service-detail { color: var(--muted); }
+body:has(#ambientOverlay.open) .feed-service-status { opacity: 0; visibility: hidden; }
+@media (prefers-reduced-motion: reduce) { .feed-service-status { transition: none; } }
+
+/* ── Gesture coach (first launches) ──────────────────────────────────────
+   One pill under the header, one gesture at a time. Line-art hands in the
+   style of system gesture guides: the hand drags along its arrow track, and
+   the track lights in the direction of travel. */
+.coach {
+  position: fixed; z-index: 60; left: 50%; top: 128px;
+  box-sizing: border-box; width: max-content; max-width: calc(100vw - 32px); min-height: 40px; padding: 6px 16px 6px 10px;
+  display: flex; align-items: center;
+  border: 1px solid color-mix(in srgb, var(--rule) 70%, transparent); border-radius: 999px;
+  background: color-mix(in srgb, var(--surface) 86%, transparent); color: var(--ink);
+  -webkit-backdrop-filter: blur(16px) saturate(1.4); backdrop-filter: blur(16px) saturate(1.4);
+  box-shadow: 0 6px 20px #0005; cursor: pointer;
+  opacity: 0; visibility: hidden; pointer-events: none; transform: translate(-50%, -6px);
+  transition: opacity .28s ease, transform .36s cubic-bezier(.22, 1, .36, 1), visibility 0s .36s;
+}
+body.light .coach { box-shadow: 0 6px 20px #0002; }
+.coach.is-visible { opacity: 1; visibility: visible; pointer-events: auto; transform: translate(-50%, 0); transition-delay: 0s; }
+.coach-row { display: flex; align-items: center; gap: 8px; animation: coach-in .32s ease both; }
+.coach-row[hidden] { display: none; }
+.rtl-ui .coach { direction: rtl; padding: 6px 10px 6px 16px; }
+.coach-row p { margin: 0; font: 500 14px/1.35 var(--sans); color: var(--muted); }
+.coach-row strong { font-weight: 600; color: var(--ink); }
+.coach-ico { flex: none; width: 26px; height: 26px; overflow: visible; fill: none; stroke: var(--ink); stroke-width: 1.7; stroke-linecap: round; stroke-linejoin: round; }
+.coach-track { stroke: var(--accent); stroke-width: 1.9; opacity: .9; }
+.coach-desk { display: none; }
+@media (hover: hover) and (pointer: fine) { .coach-touch { display: none; } .coach-desk { display: inline; } }
+.coach.is-visible [data-gesture="scroll"] .coach-move { animation: coach-scroll 2.4s .4s infinite cubic-bezier(.45, 0, .25, 1); }
+.coach.is-visible [data-gesture="scroll"] .coach-track { animation: coach-track-v 2.4s .4s infinite cubic-bezier(.45, 0, .25, 1); transform-origin: 3.2px 6.6px; }
+.coach.is-visible [data-gesture="swipe"] .coach-move { animation: coach-swipe 2.8s .4s infinite cubic-bezier(.45, 0, .25, 1); transform-origin: 12px -.8px; }
+.coach.is-visible [data-gesture="swipe"] .coach-track { animation: coach-track-h 2.8s .4s infinite cubic-bezier(.45, 0, .25, 1); transform-origin: 12px -.8px; }
+@keyframes coach-in { from { opacity: 0; } }
+@keyframes coach-scroll { 0%, 100% { transform: none; } 30%, 45% { transform: translateY(-3.2px); } 70% { transform: translateY(1.4px); } }
+@keyframes coach-track-v { 0%, 100% { transform: scaleY(.82); opacity: .55; } 30%, 45% { transform: scaleY(1.08); opacity: 1; } 70% { transform: scaleY(.9); opacity: .7; } }
+@keyframes coach-swipe { 0%, 100% { transform: none; } 22%, 34% { transform: translateX(3.4px) rotate(7deg); } 62%, 74% { transform: translateX(-3.4px) rotate(-7deg); } }
+@keyframes coach-track-h { 0%, 100% { transform: scaleX(.86); opacity: .55; } 22%, 34%, 62%, 74% { transform: scaleX(1.06); opacity: 1; } }
+@media (prefers-reduced-motion: reduce) {
+  .coach { transition: opacity .2s ease, visibility 0s .2s; transform: translate(-50%, 0); }
+  .coach-row, .coach.is-visible .coach-move, .coach.is-visible .coach-track { animation: none !important; }
+}
+
+/* After a tap or click, nothing stays outlined; keyboard focus keeps its ring (see discovery.js). */
+.pointer-input :focus, .pointer-input :focus-visible { outline: none !important; }
+.pointer-input .act:focus-visible { box-shadow: none; }
